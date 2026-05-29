@@ -1,5 +1,9 @@
 # cnsplots Codex Skill
 
+中文简介：
+这是一个给 Codex 用的 `cnsplots` 绘图技能，适合生成投稿级科研图，重点面向
+Cell、Nature、Science 风格的论文图、统计差异图、火山图、生存曲线、热图和多面板组合图。
+
 Codex skill for generating publication-ready scientific figures with
 [`cnsplots`](https://github.com/faridrashidi/cnsplots), a matplotlib/seaborn-based
 plotting library tuned for Cell, Nature, and Science style figures.
@@ -7,6 +11,9 @@ plotting library tuned for Cell, Nature, and Science style figures.
 This skill helps Codex choose the right `cnsplots` API, check the Python
 environment before plotting, write reproducible figure scripts, add statistical
 annotations, and export editable SVG/PDF/PNG figures for papers and reports.
+
+它会帮助 Codex 在画图前检查 Python 环境，选择合适的 `cnsplots` API，补上统计标注，
+并导出可编辑的 SVG/PDF/PNG 文件，方便直接用于论文和汇报。
 
 ## What It Covers
 
