@@ -1,0 +1,8 @@
+interface:
+  display_name: "cnsplots Figures"
+  short_description: "Cell/Nature/Science style scientific figures"
+  brand_color: "#2563EB"
+  default_prompt: "Use $cnsplots to create a publication-ready scientific figure from my data and export an editable SVG."
+
+policy:
+  allow_implicit_invocation: true
