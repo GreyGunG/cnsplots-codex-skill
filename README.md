@@ -1,79 +1,100 @@
-# cnsplots Codex 技能
+# cnsplots Codex Skill
 
-这是一个给 Codex 使用的 `cnsplots` 绘图技能，用来生成投稿级科研图。它基于
-[`cnsplots`](https://github.com/faridrashidi/cnsplots) 这个 matplotlib/seaborn
-生态的绘图库，重点面向 Cell、Nature、Science 风格的论文图。
+这是一个给 Codex 用的绘图 skill。你把数据、列名和想要的图型告诉 Codex，它会按
+`cnsplots` 的写法帮你生成脚本，最后导出适合论文和汇报使用的 SVG、PDF 或 PNG。
 
-这个技能会帮助 Codex 在画图前检查 Python 环境，选择合适的 `cnsplots` API，编写可复现的绘图脚本，
-添加统计标注，并导出可编辑的 SVG/PDF/PNG 文件，方便直接用于论文、汇报和补充材料。
+`cnsplots` 本身是 Farid Rashidi 维护的 Python 绘图库，基于 matplotlib 和 seaborn，
+主要用来做 Cell、Nature、Science 这类期刊风格的科研图。本仓库只是把它整理成 Codex
+可直接调用的 skill，不是 `cnsplots` 的源码仓库。
 
-## 适用场景
+## 适合拿来做什么
 
-- 箱线图、小提琴图、柱状图、散点图、回归图、折线图、棒棒糖图和山峦图
-- 火山图、生存曲线、森林图、ROC 曲线、GSEA 图、富集点图、热图和混淆矩阵
-- Venn 图、UpSet 图、Sankey 图、堆叠比例图、饼图和环形图
-- Cell/Nature/Science 风格配色和论文版面尺寸
-- 通过 `pairs=` 自动添加 p 值和显著性星号
-- 组装适合论文 Figure 1 的多面板组合图
-- 在无图形界面的服务器或 CI 环境中使用 matplotlib `Agg` 后端出图
+常见论文图基本都可以从这里起步：
 
-## 安装方式
+- 组间比较：箱线图、小提琴图、柱状图、散点图、棒棒糖图
+- 组学分析：火山图、富集点图、GSEA 图、热图
+- 临床和模型评估：生存曲线、森林图、ROC 曲线、混淆矩阵
+- 集合和比例：Venn 图、UpSet 图、堆叠比例图、Sankey 图、饼图、环形图
+- 论文排版：多面板 Figure、期刊配色、可编辑 SVG 导出
 
-把这个仓库复制到 Codex 的 skills 目录：
+如果图型支持 `pairs=`，Codex 会优先用 `cnsplots` 自带的统计标注来加 p 值和显著性星号。
+
+## 安装
+
+把这个仓库放到 Codex 的 skills 目录下：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/GreyGunG/cnsplots-codex-skill.git ~/.codex/skills/cnsplots
 ```
 
-然后在 Codex 里这样调用：
+之后在 Codex 里直接点名使用：
 
 ```text
-$cnsplots 用我的 CSV 画一张 Nature 风格箱线图，带 WT vs KO 的 p 值，导出 SVG。
+$cnsplots 用 data.csv 画一张 Nature 风格箱线图，x 是 group，y 是 score，比较 Control 和 Treatment，导出 SVG。
 ```
 
-## Python 依赖
+## Python 环境
 
-这个技能需要当前 Python 环境已经安装 `cnsplots` 包。Codex 会先执行下面的命令检查环境：
+这个 skill 只负责告诉 Codex 怎么用 `cnsplots`；真正画图还需要本机 Python 能导入
+`cnsplots` 包。
+
+Codex 会先检查环境：
 
 ```bash
 python3 -c "import cnsplots, sys; print(cnsplots.__version__, sys.executable)"
 ```
 
-如果没有安装，可以用用户级安装：
+没装的话，可以装到当前用户环境：
 
 ```bash
 pip install --user --break-system-packages cnsplots
 ```
 
-也可以在项目里创建隔离环境：
+更推荐在项目里单独建一个虚拟环境：
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install cnsplots
 ```
 
-## 内置示例
+`cnsplots` 的依赖比较多，第一次安装会花一点时间。
 
-`recipes/` 目录里放了常见图型的起步脚本：
+## 自带示例
 
-- `01_boxplot_with_stats.py`：带统计标注的分组箱线图
+`recipes/` 里放了一组可以直接改列名复用的脚本：
+
+- `01_boxplot_with_stats.py`：分组箱线图，带统计标注
 - `02_volcano.py`：差异分析火山图
 - `03_survival_km.py`：Kaplan-Meier 生存曲线
-- `04_heatmap_anndata.py`：基于 AnnData 的表达矩阵热图
-- `05_multipanel_figure1.py`：论文 Figure 1 多面板组合图
-- `06_roc_multimodel.py`：多模型 ROC 曲线对比
+- `04_heatmap_anndata.py`：AnnData 表达矩阵热图
+- `05_multipanel_figure1.py`：三联面板 Figure 1
+- `06_roc_multimodel.py`：多模型 ROC 对比
 - `07_dotplot_enrichment.py`：GO/KEGG 富集点图
-- `08_upset_sets.py`：多集合交集 UpSet 图
+- `08_upset_sets.py`：多集合 UpSet 图
 
-## 引用与来源
+## 常用提示词
 
-本仓库只是把 `cnsplots` 的使用方式封装成 Codex skill。绘图库本体由 Farid Rashidi 维护：
+```text
+$cnsplots 根据 metadata.csv 画一张分组小提琴图，x=group，y=expression，比较 A 和 B，导出 PDF。
+```
 
-- 源码：<https://github.com/faridrashidi/cnsplots>
+```text
+$cnsplots 用 deg.csv 画火山图，log2FC 列是 log2FoldChange，校正 p 值列是 padj，标出 TP53、KRAS、MYC。
+```
+
+```text
+$cnsplots 把这三个图合成一个 Figure 1，多面板排版，宽度按双栏处理，导出可编辑 SVG。
+```
+
+## 来源
+
+`cnsplots` 项目地址：
+
+- GitHub：<https://github.com/faridrashidi/cnsplots>
 - 文档：<https://cnsplots.farid.one/>
 
-建议引用：
+如果论文里用到了 `cnsplots`，建议引用原项目：
 
 ```bibtex
 @software{cnsplots,
