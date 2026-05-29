@@ -1,89 +1,79 @@
-# cnsplots Codex Skill
+# cnsplots Codex 技能
 
-中文简介：
-这是一个给 Codex 用的 `cnsplots` 绘图技能，适合生成投稿级科研图，重点面向
-Cell、Nature、Science 风格的论文图、统计差异图、火山图、生存曲线、热图和多面板组合图。
+这是一个给 Codex 使用的 `cnsplots` 绘图技能，用来生成投稿级科研图。它基于
+[`cnsplots`](https://github.com/faridrashidi/cnsplots) 这个 matplotlib/seaborn
+生态的绘图库，重点面向 Cell、Nature、Science 风格的论文图。
 
-Codex skill for generating publication-ready scientific figures with
-[`cnsplots`](https://github.com/faridrashidi/cnsplots), a matplotlib/seaborn-based
-plotting library tuned for Cell, Nature, and Science style figures.
+这个技能会帮助 Codex 在画图前检查 Python 环境，选择合适的 `cnsplots` API，编写可复现的绘图脚本，
+添加统计标注，并导出可编辑的 SVG/PDF/PNG 文件，方便直接用于论文、汇报和补充材料。
 
-This skill helps Codex choose the right `cnsplots` API, check the Python
-environment before plotting, write reproducible figure scripts, add statistical
-annotations, and export editable SVG/PDF/PNG figures for papers and reports.
+## 适用场景
 
-它会帮助 Codex 在画图前检查 Python 环境，选择合适的 `cnsplots` API，补上统计标注，
-并导出可编辑的 SVG/PDF/PNG 文件，方便直接用于论文和汇报。
+- 箱线图、小提琴图、柱状图、散点图、回归图、折线图、棒棒糖图和山峦图
+- 火山图、生存曲线、森林图、ROC 曲线、GSEA 图、富集点图、热图和混淆矩阵
+- Venn 图、UpSet 图、Sankey 图、堆叠比例图、饼图和环形图
+- Cell/Nature/Science 风格配色和论文版面尺寸
+- 通过 `pairs=` 自动添加 p 值和显著性星号
+- 组装适合论文 Figure 1 的多面板组合图
+- 在无图形界面的服务器或 CI 环境中使用 matplotlib `Agg` 后端出图
 
-## What It Covers
+## 安装方式
 
-- Box, violin, bar, strip, lollipop, scatter, regression, line, and ridge plots
-- Volcano, survival, forest, ROC, GSEA, dot, heatmap, and confusion plots
-- Venn, UpSet, Sankey, stack, pie, and donut plots
-- Cell/Nature/Science-style palettes and figure sizing
-- Automatic p-value annotations through supported `pairs=` arguments
-- Multi-panel figure assembly for manuscript-style Figure 1 layouts
-- Headless server/CI plotting with matplotlib `Agg`
-
-## Install
-
-Copy this repository into your Codex skills directory:
+把这个仓库复制到 Codex 的 skills 目录：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/GreyGunG/cnsplots-codex-skill.git ~/.codex/skills/cnsplots
 ```
 
-Then invoke it in Codex:
+然后在 Codex 里这样调用：
 
 ```text
 $cnsplots 用我的 CSV 画一张 Nature 风格箱线图，带 WT vs KO 的 p 值，导出 SVG。
 ```
 
-## Python Dependency
+## Python 依赖
 
-The skill expects the Python package `cnsplots` to be available. Codex will check
-first with:
+这个技能需要当前 Python 环境已经安装 `cnsplots` 包。Codex 会先执行下面的命令检查环境：
 
 ```bash
 python3 -c "import cnsplots, sys; print(cnsplots.__version__, sys.executable)"
 ```
 
-If missing, install it with one of:
+如果没有安装，可以用用户级安装：
 
 ```bash
 pip install --user --break-system-packages cnsplots
 ```
 
-or in an isolated project environment:
+也可以在项目里创建隔离环境：
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install cnsplots
 ```
 
-## Included Recipes
+## 内置示例
 
-The `recipes/` folder contains small starting points for common figure types:
+`recipes/` 目录里放了常见图型的起步脚本：
 
-- `01_boxplot_with_stats.py`
-- `02_volcano.py`
-- `03_survival_km.py`
-- `04_heatmap_anndata.py`
-- `05_multipanel_figure1.py`
-- `06_roc_multimodel.py`
-- `07_dotplot_enrichment.py`
-- `08_upset_sets.py`
+- `01_boxplot_with_stats.py`：带统计标注的分组箱线图
+- `02_volcano.py`：差异分析火山图
+- `03_survival_km.py`：Kaplan-Meier 生存曲线
+- `04_heatmap_anndata.py`：基于 AnnData 的表达矩阵热图
+- `05_multipanel_figure1.py`：论文 Figure 1 多面板组合图
+- `06_roc_multimodel.py`：多模型 ROC 曲线对比
+- `07_dotplot_enrichment.py`：GO/KEGG 富集点图
+- `08_upset_sets.py`：多集合交集 UpSet 图
 
-## Attribution
+## 引用与来源
 
-This repository packages a Codex skill for working with `cnsplots`. The plotting
-library itself is maintained by Farid Rashidi:
+本仓库只是把 `cnsplots` 的使用方式封装成 Codex skill。绘图库本体由 Farid Rashidi 维护：
 
-- Source: <https://github.com/faridrashidi/cnsplots>
-- Docs: <https://cnsplots.farid.one/>
+- 源码：<https://github.com/faridrashidi/cnsplots>
+- 文档：<https://cnsplots.farid.one/>
 
-Suggested citation:
+建议引用：
 
 ```bibtex
 @software{cnsplots,

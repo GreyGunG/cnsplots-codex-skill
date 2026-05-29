@@ -1,8 +1,8 @@
 interface:
-  display_name: "cnsplots Figures"
-  short_description: "Cell/Nature/Science style scientific figures"
+  display_name: "cnsplots 科研绘图"
+  short_description: "生成 Cell/Nature/Science 风格科研图"
   brand_color: "#2563EB"
-  default_prompt: "Use $cnsplots to create a publication-ready scientific figure from my data and export an editable SVG."
+  default_prompt: "使用 $cnsplots 根据我的数据生成投稿级科研图，并导出可编辑 SVG。"
 
 policy:
   allow_implicit_invocation: true
